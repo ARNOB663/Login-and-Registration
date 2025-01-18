@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +10,7 @@ const Signup = () => {
     email: '',
     password: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +22,13 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    const { username, email, password } = formData;
+    axios.post('http://localhost:3001/register', { username, email, password })
+      .then(res => {console.log(res)
+        // go to login page
+        navigate('/login');
+      })
+      .catch(err => console.log(err));
   };
 
   return (
